@@ -10,7 +10,7 @@ imagelist = []                                                 # Contains the li
 
 folder = str(input("insert your picture's folder directory: "))                                          # Folder containing all the images.
 name = str(input("insert your desired document name: "))+".pdf"                                          # Name of the output PDF file.
-moon = int(input("press 1 if you want to auto-rotate picture: "))
+moon = int(input("press 1 if you want to auto-rotate picture, press other number if you don't: "))
 
 # ------------- ADD ALL THE IMAGES IN A LIST ------------- #
 
@@ -29,7 +29,7 @@ if moon == 1:
         im1 = Image.open(imagelist[i])                             # Open the image.
         width, height = im1.size                                   # Get the width and height of that image.
         if width > height:
-            print("i kuy")
+            print("rotating picture")
             im2 = im1.transpose(Image.ROTATE_270)                  # If width > height, rotate the image.
             os.remove(imagelist[i])                                # Delete the previous image.
             im2.save(imagelist[i])                                 # Save the rotated image.
@@ -48,3 +48,9 @@ for image in imagelist:
 pdf.output(folder + name, "F")                                 # Save the PDF.
 
 print("PDF generated successfully!")
+
+ork = str(input("press any key to exit..."))
+if ork == "Y":
+    exit()
+else:
+    exit()
