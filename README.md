@@ -1,7 +1,7 @@
 # JPG-to-PDF with CLI
 Simple Python script to convert a set of images to PDF and combine them into one single PDF file within seconds. This is a fork of [praneetk2704's JPG-to-PDF](https://github.com/praneetk2704/JPG-to-PDF)
 <br /><br />
-![screenshot_1](piktur\demonstration.png)
+![screenshot_1](/piktur/demonstration.png)
 
 Does your teacher requires you to submit your assignment in PDF but you do your works with pen and paper because you can't stand working on iPad? Well, this tool is make for YOU! 
 
