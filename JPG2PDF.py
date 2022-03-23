@@ -9,20 +9,14 @@ while True:
 
     folder = str(input("insert your picture's folder directory: "))                                          # Folder containing all the images.
     name = str(input("insert your desired document name: "))+".pdf"                                          # Name of the output PDF file.
-    moonmai = input("press 1 if you want to auto-rotate picture, press other number if you don't: ")
-    size = input("insert the paper size: ")
+    moonmai = input("Do you want to auto-rotate page that contains landscape picture to a landscape page(Y/N)?: ") or 'y'
+    size = input("insert the paper size: ") or 'a4'
 
-    if moonmai == "":
-        moonmai = 1
 
-    moon = int(moonmai)
+    moon = str(moonmai)
     
-    if size == "":
-        size == str(A4)
-
-
     # ---------------FPDF--------------------------------#
-    pdf = FPDF(format = str(size))
+    pdf = FPDF(format = f'{size}')
     imagelist = []                                                 # Contains the list of all images to be converted to PDF.
 
     # --------------- DEFINE OUTPUT PAPER SIZE --------------------#
@@ -41,7 +35,7 @@ while True:
     # ------------- ADD ALL THE IMAGES IN A LIST ------------- #
 
     for dirpath, dirnames, filenames in os.walk(folder):
-        for filename in [f for f in filenames]:
+        for filename in [f for f in filenames if f.endswith(".jpg") or f.endswith(".png")]:
             full_path = os.path.join(dirpath, filename)
             imagelist.append(full_path)
 
@@ -50,7 +44,7 @@ while True:
         print(imagelist[i])
 
     # --------------- ROTATE ANY LANDSCAPE MODE IMAGE IF PRESENT ----------------- #
-    if moon == 1:
+    if moon == 'y' or  moon == 'Y':
         for i in range(0, len(imagelist)):
             im1 = Image.open(imagelist[i])                             # Open the image.
             width, height = im1.size                                   # Get the width and height of that image.
@@ -75,8 +69,9 @@ while True:
 
     print("PDF generated successfully!")
     # ---------------Exit----#
-    print("Exit Mai Yom (y/n)")
+    print("Press Y if you want to exit, Otherwise press ENTER twice.:")
     if input() == "y" or input() == "Y":
         exit()
+    
     os.system('cls' if os.name == 'nt' else 'clear')
-
+    
