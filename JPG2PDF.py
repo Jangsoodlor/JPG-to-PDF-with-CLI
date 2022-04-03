@@ -8,8 +8,9 @@ import natsort
 while True:
     # --------------- USER INPUT -------------------- #
 
-    folder = str(input("insert your picture's folder directory: "))                                          # Folder containing all the images.
-    name = str(input("insert your desired document name: "))+".pdf"                                          # Name of the output PDF file.
+    folderinput = input("insert your picture's folder directory: ")
+    folder = rf'{folderinput}'                                                                                 # Folder containing all the images.
+    name = str(input("insert your desired document name: "))+".pdf"                                            # Name of the output PDF file.
     # moon = str(input("Do you want to auto-rotate landscape pictures to portrait?(Y/N)?: ")) or 'n'
     size = input("insert the paper size: ") or 'a4'
 
@@ -17,7 +18,7 @@ while True:
     
     # ---------------FPDF--------------------------------#
     pdf = FPDF(format = f'{size}')
-    imagelist = []                                                 # Contains the list of all images to be converted to PDF.
+    imagelist = []                                                                                             # Contains the list of all images to be converted to PDF.
 
     # --------------- DEFINE OUTPUT PAPER SIZE --------------------#
 
@@ -33,7 +34,7 @@ while True:
 
 
     # ------------- ADD ALL THE IMAGES IN A LIST ------------- #
-
+    print('your directory is: ' + folder +'\n')
     for dirpath, dirnames, filenames in os.walk(folder):
         for filename in [f for f in filenames if f.endswith(".jpg") or f.endswith(".png")]:
             full_path = os.path.join(dirpath, filename)
@@ -43,7 +44,7 @@ while True:
     for i in range(0, len(imagelist)):
         print(imagelist[i])
 
-    # --------------- ROTATE ANY LANDSCAPE MODE IMAGE IF PRESENT ----------------- #
+    # --------------- ROTATE ANY LANDSCAPE MODE IMAGE IF PRESENT (Disabled for now) ----------------- #
     # if moon == 'y' or  moon == 'Y':
     #     for i in range(0, len(imagelist)):
     #         im1 = Image.open(imagelist[i])                             # Open the image.
@@ -73,7 +74,7 @@ while True:
     #     pdf.add_page()
     #     pdf.image(image, 0, 0, 297, 210)     
         
-    pdf.output(folder + name, "F")                                 # Save the PDF.
+    pdf.output(folder + '\\' + f'{name}', "F")                                 # Save the PDF.
 
     print("PDF generated successfully!")
     # ---------------Exit----#
