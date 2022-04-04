@@ -35,7 +35,7 @@ while True:
     print('your directory is: ' + folder +'\n')
 
     for item in os.listdir(folder):
-        if item.endswith('jpg') or item.endswith('png'):
+        if item.endswith('jpg') or item.endswith('png') or item.endswith('JPG') or item.endswith('PNG'):
             full_path = folder + '\\' + f'{item}'
             print(full_path)
             imagelist.append(full_path)
