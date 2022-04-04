@@ -15,10 +15,10 @@ The outputted file will be located in the directory of your folder that is conta
 
 ## Building
 You're required to install 3 dependencies from pip. Which are:
-1. fpdf
-2. pillow
-3. natsort
-
+```bash
+fpdf
+pillow
+```
 
 
 
