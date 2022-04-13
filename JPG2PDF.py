@@ -41,14 +41,14 @@ while True:
     # --------------- DEFINE OUTPUT PAPER SIZE --------------------#
 
     if size == 'A3' or size == 'a3':
-        x = int(297)
-        y = int (420)
+        w = int(297)
+        h = int (420)
     elif size == 'A4' or size == 'a4':
-        x = int(210)
-        y = int(297)
+        w = int(210)
+        h = int(297)
     elif size == 'A5' or size == 'a5':
-        x = int(148)
-        y = int (210)
+        w = int(148)
+        h = int (210)
 
     # -------------- CONVERT TO PDF ------------ #
     
@@ -60,30 +60,30 @@ while True:
         width, height = im1.size                                   # Get the width and height of that image.
 
         def AspCalc():
-            a = im1.width // x
+            a = im1.width // w
             b = im1.height // a
-            if b <= y:
+            if b <= h:
                 return int(b)
-            elif b > y:
-                c = im1.height // y
+            elif b > h:
+                c = im1.height // h
                 d = im1.width // c
-                return int(c)
+                return int(d)
         
         if width > height:
             if aspect.lower() == 'n':
                 pdf.add_page('L')
-                pdf.image(imagelist[i], 0, 0, y, x)
+                pdf.image(imagelist[i], 0, 0, h, w)
             elif aspect.lower() == 'y':
                 pdf.add_page('L')
-                pdf.image(imagelist[i], 0, 0, y, AspCalc())
+                pdf.image(imagelist[i], 0, 0, h, AspCalc())
         
         if width <= height:
             if aspect.lower() == 'n':
                 pdf.add_page('P')
-                pdf.image(imagelist[i], 0, 0, x, y)
+                pdf.image(imagelist[i], 0, 0, w, h)
             elif aspect.lower() == 'y':
                 pdf.add_page('P')
-                pdf.image(imagelist[i], 0, 0, x, AspCalc())        
+                pdf.image(imagelist[i], 0, 0, w, AspCalc())        
 
         
     pdf.output(folder + '\\' + name + '.pdf' , 'F')                      # Save the PDF.
