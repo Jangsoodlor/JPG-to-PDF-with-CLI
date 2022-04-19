@@ -1,20 +1,22 @@
 # JPG-to-PDF with CLI
-Simple Python script to convert a set of images to PDF and combine them into one single PDF file within seconds. Based on [praneetk2704's JPG-to-PDF](https://github.com/praneetk2704/JPG-to-PDF)
+
+Does your teacher requires you to submit your assignment in PDF but you have to work with pen and paper? Well, this tool is made for YOU! 
+
+This is a simple Python script to convert images to PDF and combine them into one single PDF file. Based on [praneetk2704's JPG-to-PDF](https://github.com/praneetk2704/JPG-to-PDF)
 <br /><br />
-![screenshot_1](/piktur/demonstration.png)
+![screenshot_1](/pic/demonstration-new.png)
 
-Does your teacher requires you to submit your assignment in PDF but you do your works with pen and paper because you can't stand working on iPad? Well, this tool is make for YOU! 
+## OK Cool, But how do I use it?
+First, you download the executable file in the release tab on the right to your computer. Open it and then follow the instructions on the screen.
 
-## Features
-This program asks you 3 questions.
-1. Your folder containing your images.
-2. Your desired document name.
-3. Whether or not do you want to auto-rotate a page containing landscape image to a landscape page
-
-The outputted file will be located in the directory of your folder that is containing your images.
+### demonstrations
+![demo](/pic/how1.png)
+![demo](/pic/how2.png)
+![demo](/pic/how3.png)
+![demo](/pic/how4.png)
 
 ## Building
-You're required to install 3 dependencies from pip. Which are:
+You're required to install 2 dependencies from pip. Which are:
 ```bash
 fpdf
 pillow

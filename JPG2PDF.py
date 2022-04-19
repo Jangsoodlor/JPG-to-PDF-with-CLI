@@ -19,12 +19,22 @@ def openFolder():
     file_path = filedialog.askdirectory()
     return file_path
 
+def AspCalc(w,h,im1):
+    a = im1.width // w
+    b = im1.height // a
+    if b <= h:
+        return int(b)
+    elif b > h:
+        c = im1.height // h
+        d = im1.width // c
+        return int(d)
+
 while True:
     # -------------- TUTORIAL ----#
 
     print("JPG-to-PDF with CLI v.3.2.0" + '\n' + 'Copyright (c) 2022 Jangsoodlor. All rights reserved.' + '\n')
     print('Please move all of your pictures that you desired to be convert to a PDF file one folder before using this program.' + '\n'
-    + 'If you left your field blank, the configuration of your PDF document will be automatically set by the default parameters.'+'\n')
+    + 'If you left your field blank, the configuration of your PDF document will be automatically set by the default parameters.'+'\n'+'The outputted file will be located in the directory of your folder that is containing your images.'+'\n')
 
     # --------------- USER INPUT -------------------- #
 
@@ -71,17 +81,7 @@ while True:
     for i in range(0, len(imagelist)):
         im1 = Image.open(imagelist[i])                             # Open the image.
         print(im1)
-        width, height = im1.size                                   # Get the width and height of that image.
-
-        def AspCalc():
-            a = im1.width // w
-            b = im1.height // a
-            if b <= h:
-                return int(b)
-            elif b > h:
-                c = im1.height // h
-                d = im1.width // c
-                return int(d)
+        width, height = im1.size                                   # Get the width and height of that image.      
         
         if width > height:
             if aspect.lower() == 'n':
@@ -89,7 +89,7 @@ while True:
                 pdf.image(imagelist[i], 0, 0, h, w)
             elif aspect.lower() == 'y':
                 pdf.add_page('L')
-                pdf.image(imagelist[i], 0, 0, h, AspCalc())
+                pdf.image(imagelist[i], 0, 0, h, AspCalc(w,h,im1))
         
         if width <= height:
             if aspect.lower() == 'n':
@@ -97,7 +97,7 @@ while True:
                 pdf.image(imagelist[i], 0, 0, w, h)
             elif aspect.lower() == 'y':
                 pdf.add_page('P')
-                pdf.image(imagelist[i], 0, 0, w, AspCalc())        
+                pdf.image(imagelist[i], 0, 0, w, AspCalc(w,h,im1))        
 
         
     pdf.output(folder + '\\' + name + '.pdf' , 'F')                      # Save the PDF.
