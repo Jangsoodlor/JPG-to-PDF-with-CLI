@@ -29,6 +29,18 @@ def AspCalc(w,h,im1):
         d = im1.width // c
         return int(d)
 
+# def AspCalc(w,h,im1):
+#     if im1.width > im1.height:
+#         pwratio = im1.width // w    #594
+#         phratio = im1.height // h   #450
+#         if phratio >= pwratio:
+#             new_width = im1.width // phratio
+#             new_height = h
+#         if phratio < pwratio:
+#             new_width = w
+#             new_height = im1. height // pwratio
+#             return new_width,new_height     
+
 while True:
     # -------------- TUTORIAL ----#
 
