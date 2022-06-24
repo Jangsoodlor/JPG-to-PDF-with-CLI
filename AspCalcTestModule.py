@@ -1,28 +1,40 @@
-#-----------import stuffs--------------------#
-from fpdf import FPDF
 from PIL import Image
 import os
-from datetime import datetime
-import tkinter as tk
-from tkinter import filedialog
 
 imagelist = []    
-w = 297
-h = 210
+w = 210
+h = 297
 
 folder = 'C:\\Users\\Jangsoodlor\\Desktop\\test\\landscapepik'
 
 def AspCalc(w,h,im1):
+    
     if im1.width > im1.height:
-        pwratio = im1.width // w    #594
-        phratio = im1.height // h   #450
+        width = h
+        height = w
+        pwratio = im1.width // width    #594
+        phratio = im1.height // height   #450        
         if phratio >= pwratio:
             new_width = im1.width // phratio
-            new_height = h
+            new_height = height
         elif phratio < pwratio:
-            new_width = w
+            new_width = width
             new_height = im1. height // pwratio
-        return new_width,new_height     
+
+    elif im1.width <= im1.height:
+        width = w
+        height = h
+        pwratio = im1.width // width    #594
+        phratio = im1.height // height   #450
+        if phratio >= pwratio:
+            new_width = im1.width // phratio
+            new_height = height
+        elif phratio < pwratio:
+            new_width = width
+            new_height = im1. height // pwratio
+
+    return new_width,new_height
+         
 
 
 for item in os.listdir(folder):
@@ -31,15 +43,14 @@ for item in os.listdir(folder):
             imagelist.append(full_path)
             imagelist.sort()      # Sort the images by name.
 
-                                            
-for i in range(0, len(imagelist)):
-    print(imagelist[i])
+    
 
 print('\nFound ' + str(len(imagelist)) + ' images. Converting to PDF....\n')
 for i in range(0, len(imagelist)):
+    print(imagelist[i])
     im1 = Image.open(imagelist[i])                             # Open the image.
     print(im1)
     width, height = im1.size
-    print(AspCalc(w,h,im1))
+    print(AspCalc(w,h,im1)[1])
 
 

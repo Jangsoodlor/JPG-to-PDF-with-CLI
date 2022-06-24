@@ -19,27 +19,43 @@ def openFolder():
     file_path = filedialog.askdirectory()
     return file_path
 
-def AspCalc(w,h,im1):
-    a = im1.width // w
-    b = im1.height // a
-    if b <= h:
-        return int(b)
-    elif b > h:
-        c = im1.height // h
-        d = im1.width // c
-        return int(d)
-
 # def AspCalc(w,h,im1):
-#     if im1.width > im1.height:
-#         pwratio = im1.width // w    #594
-#         phratio = im1.height // h   #450
-#         if phratio >= pwratio:
-#             new_width = im1.width // phratio
-#             new_height = h
-#         if phratio < pwratio:
-#             new_width = w
-#             new_height = im1. height // pwratio
-#             return new_width,new_height     
+#     a = im1.width // w
+#     b = im1.height // a
+#     if b <= h:
+#         return int(b)
+#     elif b > h:
+#         c = im1.height // h
+#         d = im1.width // c
+#         return int(d)
+
+def AspCalc(w,h,im1):
+    
+    if im1.width > im1.height:
+        width = h
+        height = w
+        pwratio = im1.width // width    #594
+        phratio = im1.height // height   #450        
+        if phratio >= pwratio:
+            new_width = im1.width // phratio
+            new_height = height
+        elif phratio < pwratio:
+            new_width = width
+            new_height = im1. height // pwratio
+
+    elif im1.width <= im1.height:
+        width = w
+        height = h
+        pwratio = im1.width // width    #594
+        phratio = im1.height // height   #450
+        if phratio >= pwratio:
+            new_width = im1.width // phratio
+            new_height = height
+        elif phratio < pwratio:
+            new_width = width
+            new_height = im1. height // pwratio
+
+    return new_width,new_height
 
 while True:
     # -------------- TUTORIAL ----#
@@ -54,7 +70,7 @@ while True:
     folder = rf'{folderinput}'                                                                      # Folder containing all the images.
     name = str(input('insert your desired document name (if left blank, your document will be named after the current time): ')) or getDateTimeStr()                    # Name of the output PDF file.
     size = input('insert the paper size [A3/A4/A5] (Default: A4): ') or 'a4'
-    aspect = str(input('keep your aspect ratio?[Y/N] (Default: N): ')) or 'n'
+    aspect = str(input('keep your aspect ratio?[Y/N] (Default: Y): ')) or 'y'
     
     
     # ---------------FPDF--------------------------------#
@@ -71,8 +87,6 @@ while True:
             imagelist.sort()      # Sort the images by name.
 
                                             
-    for i in range(0, len(imagelist)):
-        print(imagelist[i])
 
     # --------------- DEFINE OUTPUT PAPER SIZE --------------------#
 
@@ -93,7 +107,9 @@ while True:
     for i in range(0, len(imagelist)):
         im1 = Image.open(imagelist[i])                             # Open the image.
         print(im1)
-        width, height = im1.size                                   # Get the width and height of that image.      
+        width, height = im1.size                                   # Get the width and height of that image.
+        print(imagelist[i])
+        print(AspCalc(w,h,im1))      
         
         if width > height:
             if aspect.lower() == 'n':
@@ -101,7 +117,7 @@ while True:
                 pdf.image(imagelist[i], 0, 0, h, w)
             elif aspect.lower() == 'y':
                 pdf.add_page('L')
-                pdf.image(imagelist[i], 0, 0, h, AspCalc(w,h,im1))
+                pdf.image(imagelist[i], 0, 0, AspCalc(w,h,im1)[0], AspCalc(w,h,im1)[1])
         
         if width <= height:
             if aspect.lower() == 'n':
@@ -109,7 +125,7 @@ while True:
                 pdf.image(imagelist[i], 0, 0, w, h)
             elif aspect.lower() == 'y':
                 pdf.add_page('P')
-                pdf.image(imagelist[i], 0, 0, w, AspCalc(w,h,im1))        
+                pdf.image(imagelist[i], 0, 0, AspCalc(w,h,im1)[0], AspCalc(w,h,im1)[1])        
 
         
     pdf.output(folder + '\\' + name + '.pdf' , 'F')                      # Save the PDF.
