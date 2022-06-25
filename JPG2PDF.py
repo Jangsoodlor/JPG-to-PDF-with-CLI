@@ -19,48 +19,35 @@ def openFolder():
     file_path = filedialog.askdirectory()
     return file_path
 
-# def AspCalc(w,h,im1):
-#     a = im1.width // w
-#     b = im1.height // a
-#     if b <= h:
-#         return int(b)
-#     elif b > h:
-#         c = im1.height // h
-#         d = im1.width // c
-#         return int(d)
-
-def AspCalc(w,h,im1):
-    
-    if im1.width > im1.height:
-        width = h
-        height = w
-        pwratio = im1.width // width    #594
-        phratio = im1.height // height   #450        
-        if phratio >= pwratio:
-            new_width = im1.width // phratio
-            new_height = height
-        elif phratio < pwratio:
-            new_width = width
-            new_height = im1. height // pwratio
-
-    elif im1.width <= im1.height:
-        width = w
-        height = h
-        pwratio = im1.width // width    #594
-        phratio = im1.height // height   #450
-        if phratio >= pwratio:
-            new_width = im1.width // phratio
-            new_height = height
-        elif phratio < pwratio:
-            new_width = width
-            new_height = im1. height // pwratio
+def AspCalc_P(w,h,im1):
+    pwratio = im1.width // w    #594
+    phratio = im1.height // h     
+    if phratio >= pwratio:
+        new_width = im1.width // phratio
+        new_height = h
+    elif phratio < pwratio:
+        new_width = w
+        new_height = im1. height // pwratio
 
     return new_width,new_height
+
+def AspCalc_L(w,h,im1):
+    pwratio = im1.width // h
+    phratio = im1.height // w     
+    if phratio >= pwratio:
+        new_width = im1.width // phratio
+        new_height = w
+    elif phratio < pwratio:
+        new_width = h
+        new_height = im1. height // pwratio
+
+    return new_width,new_height
+
 
 while True:
     # -------------- TUTORIAL ----#
 
-    print("JPG-to-PDF with CLI v.3.2.0" + '\n' + 'Copyright (c) 2022 Jangsoodlor. All rights reserved.' + '\n')
+    print("JPG-to-PDF with CLI v.3.3.1" + '\n' + 'Copyright (c) 2022 Jangsoodlor. All rights reserved.' + '\n')
     print('Please move all of your pictures that you desired to be convert to a PDF file one folder before using this program.' + '\n'
     + 'If you left your field blank, the configuration of your PDF document will be automatically set by the default parameters.'+'\n'+'The outputted file will be located in the directory of your folder that is containing your images.'+'\n')
 
@@ -108,24 +95,23 @@ while True:
         im1 = Image.open(imagelist[i])                             # Open the image.
         print(im1)
         width, height = im1.size                                   # Get the width and height of that image.
-        print(imagelist[i])
-        print(AspCalc(w,h,im1))      
+        print(imagelist[i])    
         
         if width > height:
+            pdf.add_page('L')
             if aspect.lower() == 'n':
-                pdf.add_page('L')
                 pdf.image(imagelist[i], 0, 0, h, w)
             elif aspect.lower() == 'y':
-                pdf.add_page('L')
-                pdf.image(imagelist[i], 0, 0, AspCalc(w,h,im1)[0], AspCalc(w,h,im1)[1])
+                print(AspCalc_L(w,h,im1))                
+                pdf.image(imagelist[i], 0, 0, AspCalc_L(w,h,im1)[0], AspCalc_L(w,h,im1)[1])
         
-        if width <= height:
-            if aspect.lower() == 'n':
-                pdf.add_page('P')
+        elif width <= height:
+            pdf.add_page('P')
+            if aspect.lower() == 'n':                
                 pdf.image(imagelist[i], 0, 0, w, h)
             elif aspect.lower() == 'y':
-                pdf.add_page('P')
-                pdf.image(imagelist[i], 0, 0, AspCalc(w,h,im1)[0], AspCalc(w,h,im1)[1])        
+                print(AspCalc_P(w,h,im1))  
+                pdf.image(imagelist[i], 0, 0, AspCalc_P(w,h,im1)[0], AspCalc_P(w,h,im1)[1])        
 
         
     pdf.output(folder + '\\' + name + '.pdf' , 'F')                      # Save the PDF.
