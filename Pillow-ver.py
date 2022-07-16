@@ -48,8 +48,8 @@ def folderSrc(folder):
     print('Your directory is: ' + folder +'\n')                                                                                     
     for item in os.listdir(folder):
         if item.lower().endswith(('.png', '.jpg', '.jpeg')):
-            full_path = folder + '\\' + f'{item}'
-            imageList.append(full_path)
+            fullPath = folder + '\\' + f'{item}'
+            imageList.append(fullPath)
             imageList.sort()      # Sort the images by name.
     return imageList
 
