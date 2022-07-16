@@ -41,7 +41,24 @@ def AspCalc_L(w,h,im1):
         new_height = im1.shape[0] // pwratio
 
     return new_width,new_height
+def folder_src(folder):
+    imagelist = []
+    print('your directory is: ' + folder +'\n')                                                                                     
+    for item in os.listdir(folder):
+        if item.lower().endswith(('.png', '.jpg', '.jpeg')):
+            full_path = folder + '\\' + f'{item}'
+            imagelist.append(full_path)
+            imagelist.sort()      # Sort the images by name.
+    return imagelist
 
+def listmaker():
+    imagelist = []
+    while True:
+        src = input('insert da sauce')
+        if src == '':
+            break
+        imagelist.append(src)
+    return imagelist      
 
 while True:
     # -------------- TUTORIAL ----#
@@ -51,30 +68,21 @@ while True:
     + 'If you left your field blank, the configuration of your PDF document will be automatically set by the default parameters.'+'\n'+'The outputted file will be located in the directory of your folder that is containing your images.'+'\n')
 
     # --------------- USER INPUT -------------------- #
-
-    folderinput = input("insert your picture's folder directory (or Press ENTER to open select dialog): ") or openFolder()
-    folder = rf'{folderinput}'                                                                      # Folder containing all the images.
-    # folder = 'C:\\Users\\Jangsoodlor\\Desktop\\test\\realworldtest'
+    how = input('How do you want to import photos')
     name = str(input('insert your desired document name (if left blank, your document will be named after the current time): ')) or getDateTimeStr()                    # Name of the output PDF file.
     size = input('insert the paper size [A3/A4/A5] (Default: A4): ') or 'a4'
     aspect = str(input('keep your aspect ratio?[Y/N] (Default: Y): ')) or 'y'
     
     
-    # ---------------FPDF--------------------------------#
+    # ---------------Declaring how to import photos -----------------------#
     pdf = FPDF(format = f'{size}')
-    imagelist = []                                                                                   # Contains the list of all images to be converted to PDF.
-       
-
-    # ------------- ADD ALL THE IMAGES IN A LIST ------------- #
-    print('your directory is: ' + folder +'\n')                                                                                     
-    for item in os.listdir(folder):
-        if item.lower().endswith(('.png', '.jpg', '.jpeg')):
-            full_path = folder + '\\' + f'{item}'
-            imagelist.append(full_path)
-            imagelist.sort()      # Sort the images by name.
-
-                                            
-
+    if how == 'fol':
+        src_input = input("insert your picture's folder directory (or Press ENTER to open select dialog): ") or openFolder()
+        folder = rf'{src_input}'
+        imagelist = folder_src(folder)
+    elif how == 'man':             
+        imagelist = listmaker()                                                                             # Contains the list of all images to be converted to PDF.
+        folder = input('insert da folder baka')  
     # --------------- DEFINE OUTPUT PAPER SIZE --------------------#
 
     if size.lower().endswith(('a3')):
@@ -90,13 +98,11 @@ while True:
     # -------------- CONVERT TO PDF ------------ #
     print('\nFound ' + str(len(imagelist)) + ' images. Converting to PDF....\n')
     for i in range(0, len(imagelist)):
-        im1 = iio.imread(imagelist[i])
+        im1 = iio.v3.imread(imagelist[i])
         print(imagelist[i])
-        print(im1.shape)
         
         if im1.shape[1] > im1.shape[0]:
             pdf.add_page('L')
-            print('landscape')
             if aspect.lower() == 'n':
                 pdf.image(imagelist[i], 0, 0, h, w)
             elif aspect.lower() == 'y':
@@ -105,7 +111,6 @@ while True:
         
         elif im1.shape[1] <= im1.shape[0]:
             pdf.add_page('P')
-            print('portrait')
             if aspect.lower() == 'n':                
                 pdf.image(imagelist[i], 0, 0, w, h)
             elif aspect.lower() == 'y':
