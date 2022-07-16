@@ -19,8 +19,15 @@ First, you download the executable file in the release tab on the right to your 
 You're required to install 2 dependencies from pip. Which are:
 ```bash
 fpdf
-pillow
+pillow -- for Pillow-ver
+imageio -- for iio-ver
 ```
+WHY? Read below
+
+## Known Problem(s)
+Some pictures' orientation may be incorrect. This is because of the EXIF data associated with the pictures is incorrect. I'm currently trying to fix it by experimenting with different photo-processing libraries. But documentations regarding this are A HUGE F***ING MESS.
+
+
 
 
 
