@@ -16,51 +16,51 @@ def getDateTimeStr():
 def openFolder():
     root = tk.Tk()
     root.withdraw()
-    file_path = filedialog.askdirectory()
-    return file_path
+    filePath = filedialog.askdirectory()
+    return filePath
 
-def AspCalc_P(w,h,im1):
-    pwratio = im1.width // w    #594
-    phratio = im1.height // h     
-    if phratio >= pwratio:
-        new_width = im1.width // phratio
-        new_height = h
-    elif phratio < pwratio:
-        new_width = w
-        new_height = im1. height // pwratio
+def AspCalc_P(paperWidth, paperHeight, image):
+    imageWidth = image.width // paperWidth
+    imageHeight = image.height // paperHeight
+    if imageHeight >= imageWidth:
+        newWidth = image.width // imageHeight
+        newHeight = paperHeight
+    elif imageHeight < imageWidth:
+        newWidth = paperWidth
+        newHeight = image.height // imageWidth
 
-    return new_width,new_height
+    return newWidth, newHeight
 
-def AspCalc_L(w,h,im1):
-    pwratio = im1.width // h
-    phratio = im1.height // w     
-    if phratio >= pwratio:
-        new_width = im1.width // phratio
-        new_height = w
-    elif phratio < pwratio:
-        new_width = h
-        new_height = im1. height // pwratio
+def AspCalc_L(paperWidth, paperHeight, image):
+    imageWidth = image.width // paperHeight
+    imageHeight = image.height // paperWidth   
+    if imageHeight >= imageWidth:
+        newWidth = image.width // imageHeight
+        newHeight = paperWidth
+    elif imageHeight < imageWidth:
+        newWidth = paperHeight
+        newHeight = image.height // imageWidth
 
-    return new_width,new_height
+    return newWidth, newHeight
 
-def folder_src(folder):
-    imagelist = []
-    print('your directory is: ' + folder +'\n')                                                                                     
+def folderSrc(folder):
+    imageList = []
+    print('Your directory is: ' + folder +'\n')                                                                                     
     for item in os.listdir(folder):
         if item.lower().endswith(('.png', '.jpg', '.jpeg')):
-            full_path = folder + '\\' + f'{item}'
-            imagelist.append(full_path)
-            imagelist.sort()      # Sort the images by name.
-    return imagelist
+            fullPath = folder + '\\' + f'{item}'
+            imageList.append(fullPath)
+            imageList.sort()      # Sort the images by name.
+    return imageList
 
-def listmaker():
-    imagelist = []
+def listMaker():
+    imageList = []
     while True:
-        src = input('insert da sauce')
+        src = input('Insert image path: ')
         if src == '':
             break
-        imagelist.append(src)
-    return imagelist      
+        imageList.append(src)
+    return imageList      
 
 while True:
     # -------------- TUTORIAL ----#
@@ -70,59 +70,59 @@ while True:
     + 'If you left your field blank, the configuration of your PDF document will be automatically set by the default parameters.'+'\n'+'The outputted file will be located in the directory of your folder that is containing your images.'+'\n')
 
     # --------------- USER INPUT -------------------- #
-    how = input('How do you want to import photos')
-    name = str(input('insert your desired document name (if left blank, your document will be named after the current time): ')) or getDateTimeStr()                    # Name of the output PDF file.
-    size = input('insert the paper size [A3/A4/A5] (Default: A4): ') or 'a4'
-    aspect = str(input('keep your aspect ratio?[Y/N] (Default: Y): ')) or 'y'
+    how = input('How do you want to import photos (folder/manual): ')
+    name = str(input('Insert your desired document name (if left blank, your document will be named after the current time): ')) or getDateTimeStr()                    # Name of the output PDF file.
+    size = input('Insert the paper size [A3/A4/A5] (Default: A4): ') or 'a4'
+    aspect = str(input('Keep aspect ratio [Y/N] (Default: Y): ')) or 'y'
     
     
     # ---------------Declaring how to import photos -----------------------#
     pdf = FPDF(format = f'{size}')
-    if how == 'fol':
-        src_input = input("insert your picture's folder directory (or Press ENTER to open select dialog): ") or openFolder()
-        folder = rf'{src_input}'
-        imagelist = folder_src(folder)
-    elif how == 'man':             
-        imagelist = listmaker()                                                                             # Contains the list of all images to be converted to PDF.
-        folder = input('insert da folder baka')  
+    if how == 'folder':
+        srcInput = input("Insert image folder (or Press ENTER to open select dialog): ") or openFolder()
+        folder = rf'{srcInput}'
+        imageList = folderSrc(folder)
+    elif how == 'manual':             
+        imageList = listMaker()                                                                             # Contains the list of all images to be converted to PDF.
+        folder = input('Insert the folder that you want to save the PDF file to: ') or openFolder()
 
     # --------------- DEFINE OUTPUT PAPER SIZE --------------------#
 
     if size.lower().endswith(('a3')):
-        w = int(297)
-        h = int (420)
+        paperWidth = int(297)
+        paperHeight = int (420)
     elif size.lower().endswith(('a4')):
-        w = int(210)
-        h = int(297)
+        paperWidth = int(210)
+        paperHeight = int (297)
     elif size.lower().endswith(('a5')):
-        w = int(148)
-        h = int (210)
+        paperWidth = int(148)
+        paperHeight = int (210)
 
     # -------------- CONVERT TO PDF ------------ #
     
 
-    print('\nFound ' + str(len(imagelist)) + ' images. Converting to PDF....\n')
-    for i in range(0, len(imagelist)):
-        im1 = Image.open(imagelist[i])                             # Open the image.
-        print(im1)
-        width, height = im1.size                                   # Get the width and height of that image.
-        print(imagelist[i])    
+    print('\nFound ' + str(len(imageList)) + ' images. Converting to PDF....\n')
+    for i in range(0, len(imageList)):
+        image = Image.open(imageList[i])                             # Open the image.
+        print(image)
+        width, height = image.size                                   # Get the width and height of that image.
+        print(imageList[i])    
         
         if width > height:
             pdf.add_page('L')
             if aspect.lower() == 'n':
-                pdf.image(imagelist[i], 0, 0, h, w)
+                pdf.image(imageList[i], 0, 0, paperHeight, paperWidth)
             elif aspect.lower() == 'y':
-                print(AspCalc_L(w,h,im1))                
-                pdf.image(imagelist[i], 0, 0, AspCalc_L(w,h,im1)[0], AspCalc_L(w,h,im1)[1])
+                print(AspCalc_L(paperWidth, paperHeight, image))                
+                pdf.image(imageList[i], 0, 0, AspCalc_L(paperWidth, paperHeight, image)[0], AspCalc_L(paperWidth, paperHeight, image)[1])
         
         elif width <= height:
             pdf.add_page('P')
             if aspect.lower() == 'n':                
-                pdf.image(imagelist[i], 0, 0, w, h)
+                pdf.image(imageList[i], 0, 0, paperWidth, paperHeight)
             elif aspect.lower() == 'y':
-                print(AspCalc_P(w,h,im1))  
-                pdf.image(imagelist[i], 0, 0, AspCalc_P(w,h,im1)[0], AspCalc_P(w,h,im1)[1])        
+                print(AspCalc_P(paperWidth,paperHeight,image))  
+                pdf.image(imageList[i], 0, 0, AspCalc_P(paperWidth, paperHeight, image)[0], AspCalc_P(paperWidth, paperHeight, image)[1])        
 
         
     pdf.output(folder + '\\' + name + '.pdf' , 'F')                      # Save the PDF.
@@ -131,7 +131,7 @@ while True:
 
 
     # ---------------Exit----#
-    print('Press Y if you want to exit, Otherwise press ENTER twice.:')
+    print('Press Y if you want to exit, Otherwise press ENTER twice.: ')
     if input() == 'y' or input() == 'Y':
         exit()
     else:
