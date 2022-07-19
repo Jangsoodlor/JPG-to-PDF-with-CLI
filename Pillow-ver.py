@@ -45,7 +45,7 @@ def AspCalc_L(paperWidth, paperHeight, image):
 
 def folderSrc(folder):
     imageList = []
-    print('Your directory is: ' + folder +'\n')                                                                                     
+    print('\n'+ 'Your directory is: ' + folder +'\n')                                                                                     
     for item in os.listdir(folder):
         if item.lower().endswith(('.png', '.jpg', '.jpeg')):
             fullPath = folder + '\\' + f'{item}'
@@ -62,32 +62,40 @@ def listMaker():
         imageList.append(src)
     return imageList      
 
+# def open():
+#     path = folder
+#     command = 'explorer.exe ' + path
+#     os.system(command)      
+
 while True:
     # -------------- TUTORIAL ----#
 
-    print("JPG-to-PDF with CLI v.3.3.1" + '\n' + 'Copyright (c) 2022 Jangsoodlor. All rights reserved.' + '\n')
+    print("JPG-to-PDF with CLI v.3.4.0_P" + '\n' + 'Copyright (c) 2022 Jangsoodlor. All rights reserved.' + '\n')
     print('Please move all of your pictures that you desired to be convert to a PDF file one folder before using this program.' + '\n'
     + 'If you left your field blank, the configuration of your PDF document will be automatically set by the default parameters.'+'\n'+'The outputted file will be located in the directory of your folder that is containing your images.'+'\n')
 
     # --------------- USER INPUT -------------------- #
     how = input('How do you want to import photos (folder/manual): ')
-    name = str(input('Insert your desired document name (if left blank, your document will be named after the current time): ')) or getDateTimeStr()                    # Name of the output PDF file.
-    size = input('Insert the paper size [A3/A4/A5] (Default: A4): ') or 'a4'
-    aspect = str(input('Keep aspect ratio [Y/N] (Default: Y): ')) or 'y'
-    
-    
-    # ---------------Declaring how to import photos -----------------------#
-    pdf = FPDF(format = f'{size}')
-    if how == 'folder':
+
+    # Declaring how to import photos
+    if how == 'fol':
         srcInput = input("Insert image folder (or Press ENTER to open select dialog): ") or openFolder()
         folder = rf'{srcInput}'
         imageList = folderSrc(folder)
-    elif how == 'manual':             
-        imageList = listMaker()                                                                             # Contains the list of all images to be converted to PDF.
-        folder = input('Insert the folder that you want to save the PDF file to: ') or openFolder()
+    elif how == 'man':             
+        imageList = listMaker()
+        saveDir = input('Insert the folder that you want to save the PDF file to: ') or openFolder()
+        folder = rf'{saveDir}'
+    # End of the declaration
+
+    name = str(input('Insert your desired document name (if left blank, your document will be named after the current time): ')) or getDateTimeStr() # Name of the output PDF file.
+    size = input('Insert the paper size [A3/A4/A5] (Default: A4): ') or 'a4'
+    aspect = str(input('Keep aspect ratio [Y/N] (Default: Y): ')) or 'y'  
+    
+    
 
     # --------------- DEFINE OUTPUT PAPER SIZE --------------------#
-
+    pdf = FPDF(format = f'{size}')
     if size.lower().endswith(('a3')):
         paperWidth = int(297)
         paperHeight = int (420)
