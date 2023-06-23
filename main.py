@@ -21,6 +21,7 @@ def openFolder():
     return filePath
 
 def AspCalc_P(paper_Short, paper_Long, image):
+    pdf.add_page('P') 
     paper_ratio = paper_Short/paper_Long
     image_ratio = image.width/image.height
 
@@ -33,9 +34,12 @@ def AspCalc_P(paper_Short, paper_Long, image):
     elif image_ratio < paper_ratio:
         newWidth = paper_Long * image_ratio
         newHeight = paper_Long
-    return newWidth, newHeight
+    
+    pdf.image(imageList[i], 0, 0, newWidth, newHeight)
+    # return newWidth, newHeight
 
 def AspCalc_L(paper_Short, paper_Long, image):
+    pdf.add_page('L')
     paper_ratio = paper_Long / paper_Short
     image_ratio = image.width / image.height
 
@@ -47,7 +51,8 @@ def AspCalc_L(paper_Short, paper_Long, image):
         newWidth = paper_Short * image_ratio
         newHeight = paper_Short
     
-    return newWidth, newHeight
+    pdf.image(imageList[i], 0, 0, newWidth, newHeight)
+    # return newWidth, newHeight
 
 def folderSrc(folder):
     print('\n'+ 'Your directory is: ' + folder +'\n')                                                                                     
@@ -119,21 +124,21 @@ while True:
         width, height = image.size                                   # Get the width and height of that image.
         print(imageList[i])    
         
-        if width >= height:
-            pdf.add_page('L')
-            if aspect.lower() == 'n':
+        if aspect.lower() == 'y':
+            if width >= height:
+                AspCalc_L(paper_Short, paper_Long, image)             
+
+            elif width < height:
+                AspCalc_P(paper_Short,paper_Long,image)
+
+        elif aspect.lower() == 'n':
+            if width >= height:
+                pdf.add_page('L')
                 pdf.image(imageList[i], 0, 0, paper_Long, paper_Short)
-            elif aspect.lower() == 'y':
-                print(AspCalc_L(paper_Short, paper_Long, image))                
-                pdf.image(imageList[i], 0, 0, AspCalc_L(paper_Short, paper_Long, image)[0], AspCalc_L(paper_Short, paper_Long, image)[1])
-        
-        elif width < height:
-            pdf.add_page('P')
-            if aspect.lower() == 'n':                
+
+            elif width < height:
+                pdf.add_page('P')              
                 pdf.image(imageList[i], 0, 0, paper_Short, paper_Long)
-            elif aspect.lower() == 'y':
-                print(AspCalc_P(paper_Short,paper_Long,image))  
-                pdf.image(imageList[i], 0, 0, AspCalc_P(paper_Short, paper_Long, image)[0], AspCalc_P(paper_Short, paper_Long, image)[1])        
 
         
     pdf.output(folder + '\\' + name + '.pdf' , 'F')                      # Save the PDF.
