@@ -1,5 +1,6 @@
 # Disclaimer
-**This project have a mild case of being discontinued (at least for the forseeable future)** . As it's currently inhabited by a lot of bugs. I strongly advice you to use version 3.3.0 because 3.4.0 is just a mess as far as I can recall.
+~~**This project have a mild case of being discontinued (at least for the forseeable future)** . As it's currently inhabited by a lot of bugs. I strongly advice you to use version 3.3.0 because 3.4.0 is just a mess as far as I can recall.~~
+**Go use version 3.5.0**
 
 Does your teacher requires you to submit your assignment in PDF but you have to work with pen and paper? Well, this tool is made for YOU!
 
