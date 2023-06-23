@@ -21,27 +21,34 @@ def openFolder():
     return filePath
 
 def AspCalc_P(paper_Short, paper_Long, image):
-    imageWidthRatio = image.width // paper_Short
-    imageHeightRatio = image.height // paper_Long
-    if imageHeightRatio >= imageWidthRatio:
-        newWidth = image.width // imageHeightRatio
-        newHeight = paper_Long
-    elif imageHeightRatio < imageWidthRatio:
-        newWidth = paper_Short
-        newHeight = image.height // imageWidthRatio
+    paper_ratio = paper_Short/paper_Long
+    image_ratio = image.height/image.width
 
+    print(paper_ratio)
+    print(image_ratio)
+
+    if image_ratio >= paper_ratio:
+        newHeight = paper_Long
+        newWidth = paper_Long // image_ratio
+
+    if image_ratio < paper_ratio:
+        newWidth = paper_Short
+        newHeight = paper_Short // image_ratio
+    print(newWidth, newHeight)
     return newWidth, newHeight
 
 def AspCalc_L(paper_Short, paper_Long, image):
-    imageWidthRatio = image.width // paper_Long
-    imageHeightRatio = image.height // paper_Short   
-    if imageHeightRatio >= imageWidthRatio:
-        newWidth = image.width // imageHeightRatio
-        newHeight = paper_Short
-    elif imageHeightRatio < imageWidthRatio:
-        newWidth = paper_Long
-        newHeight = image.height // imageWidthRatio
+    paper_ratio = paper_Long/paper_Short
+    image_ratio = image.width/image.height
 
+    if image_ratio >= paper_ratio:
+        newWidth = paper_Long
+        newHeight = paper_Long // image_ratio
+    
+    elif image_ratio < paper_ratio:
+        newHeight = paper_Short
+        newWidth = paper_Short // image_ratio
+    
     return newWidth, newHeight
 
 def folderSrc(folder):
@@ -69,7 +76,7 @@ def listMaker():
 while True:
     # -------------- TUTORIAL ----#
 
-    print("JPG-to-PDF with CLI v.3.5.0_Beta" + '\n' + 'Copyright (c) 2022 - 2023 Jangsoodlor. All rights reserved.' + '\n')
+    print("JPG-to-PDF with CLI v.3.5.0" + '\n' + 'Copyright (c) 2022 - 2023 Jangsoodlor. All rights reserved.' + '\n')
     print('If you left your field blank, the configuration of your PDF document will be automatically set by the default parameters.'+'\n'+'The outputted file will be located in the directory of your folder that is containing your images.'+'\n')
 
     # --------------- USER INPUT -------------------- #
@@ -114,7 +121,7 @@ while True:
         width, height = image.size                                   # Get the width and height of that image.
         print(imageList[i])    
         
-        if width > height:
+        if width >= height:
             pdf.add_page('L')
             if aspect.lower() == 'n':
                 pdf.image(imageList[i], 0, 0, paper_Long, paper_Short)
@@ -122,7 +129,7 @@ while True:
                 print(AspCalc_L(paper_Short, paper_Long, image))                
                 pdf.image(imageList[i], 0, 0, AspCalc_L(paper_Short, paper_Long, image)[0], AspCalc_L(paper_Short, paper_Long, image)[1])
         
-        elif width <= height:
+        elif width < height:
             pdf.add_page('P')
             if aspect.lower() == 'n':                
                 pdf.image(imageList[i], 0, 0, paper_Short, paper_Long)
