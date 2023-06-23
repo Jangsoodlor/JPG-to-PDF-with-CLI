@@ -22,32 +22,30 @@ def openFolder():
 
 def AspCalc_P(paper_Short, paper_Long, image):
     paper_ratio = paper_Short/paper_Long
-    image_ratio = image.height/image.width
+    image_ratio = image.width/image.height
 
-    print(paper_ratio)
-    print(image_ratio)
+    print(paper_ratio, image_ratio)
 
     if image_ratio >= paper_ratio:
-        newHeight = paper_Long
-        newWidth = paper_Long // image_ratio
-
-    if image_ratio < paper_ratio:
+        newHeight = paper_Short / image_ratio
         newWidth = paper_Short
-        newHeight = paper_Short // image_ratio
-    print(newWidth, newHeight)
+
+    elif image_ratio < paper_ratio:
+        newWidth = paper_Long * image_ratio
+        newHeight = paper_Long
     return newWidth, newHeight
 
 def AspCalc_L(paper_Short, paper_Long, image):
-    paper_ratio = paper_Long/paper_Short
-    image_ratio = image.width/image.height
+    paper_ratio = paper_Long / paper_Short
+    image_ratio = image.width / image.height
 
-    if image_ratio >= paper_ratio:
+    if image_ratio > paper_ratio:
         newWidth = paper_Long
-        newHeight = paper_Long // image_ratio
+        newHeight = paper_Long / image_ratio
     
-    elif image_ratio < paper_ratio:
+    elif image_ratio <= paper_ratio:
+        newWidth = paper_Short * image_ratio
         newHeight = paper_Short
-        newWidth = paper_Short // image_ratio
     
     return newWidth, newHeight
 
