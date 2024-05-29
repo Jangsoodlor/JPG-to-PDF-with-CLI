@@ -2,35 +2,67 @@ from fpdf import FPDF
 from PIL import Image
 import os
 from datetime import datetime
+from paper import Paper
 
 class Converter:
-    def __init__(self, img_arr=None):
-        self.__img_arr = img_arr
+    def __init__(self, images_path: list = None,
+                 paper: tuple = (210, 297),
+                 where:str = os.getcwd()) -> None:
+        self.__paper = paper
+        self.__images_path = images_path
+        self.__where = where
 
-    def get_datetime():
-        return datetime.now().strftime('%Y%m%d_%H%M%S')
+    @property
+    def paper(self):
+        return self.__paper
 
-    def new_wh_portrait(self, paper_short, paper_long, image):
-        paper_ratio = paper_short / paper_long
-        image_ratio = image.width / image.height
+    @paper.setter
+    def paper(self, value):
+        self.__paper = value
 
-        if image_ratio >= paper_ratio:
-            new_width = paper_short
-            new_height = paper_short / image_ratio
+    @property
+    def images_path(self):
+        return self.__images_path
 
-        else:
-            new_width = paper_long * image_ratio
-            new_height = paper_long
-        return new_width, new_height
+    @images_path.setter
+    def images_path(self, new_array):
+        self.__images_path = new_array
 
-    def new_wh_landscape(self, paper_short, paper_long, image):
-        paper_ratio = paper_long / paper_short
-        image_ratio = image.width / image.height
+    @property
+    def output(self):
+        return self.__where
 
-        if image_ratio >= paper_ratio:
-            new_width = paper_long
-            new_height = paper_long / image_ratio
-        else:
-            new_width = paper_short * image_ratio
-            new_height = paper_short
-        return new_width, new_height
+    @output.setter
+    def output(self, where):
+        self.__where = where
+
+    def __get_name(self):
+        return f'{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf'
+
+    def convert(self):
+        fpdf = FPDF(unit='mm', format=self.__paper)
+        for item in self.__images_path:
+            image = Image.open(item)
+            if image.width >= image.height:
+                w, h = Paper.new_wh_landscape(self.__paper, image)
+                fpdf.add_page('L')
+            else:
+                w, h = Paper.new_wh_portrait(self.__paper, image)
+                fpdf.add_page('P')
+            fpdf.image(item, x=0, y=0, w=w, h=h)
+
+        fpdf.output(os.path.join(self.__where, self.__get_name()))
+
+
+if __name__ == '__main__':
+    folder = r'C:\Users\Jangsoodlor\codes\JPG-to-PDF-with-CLI\test\png'
+    os.chdir(folder)
+    img_arr = []
+    for i in os.listdir():
+        if i.lower().endswith(('.png', '.jpg', '.jpeg')):
+            img_arr.append(os.path.join(folder, i))
+    
+    c = Converter()
+    c.images_path = img_arr
+    c.output = os.getcwd()
+    c.convert()

@@ -141,7 +141,7 @@ while True:
                 pdf.add_page('P')              
                 pdf.image(imageList[i], 0, 0, paper_Short, paper_long)
 
-        
+
     pdf.output(folder + '\\' + name + '.pdf' , 'F')                      # Save the PDF.
 
     print('PDF generated successfully!')
