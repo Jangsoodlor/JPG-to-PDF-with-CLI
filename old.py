@@ -20,32 +20,30 @@ def openFolder():
     filePath = filedialog.askdirectory()
     return filePath
 
-def AspCalc_P(paper_Short, paper_Long, image):
+def AspCalc_P(paper_Short, paper_long, image):
     pdf.add_page('P') 
-    paper_ratio = paper_Short/paper_Long
+    paper_ratio = paper_Short/paper_long
     image_ratio = image.width/image.height
-
-    print(paper_ratio, image_ratio)
 
     if image_ratio >= paper_ratio:
         newHeight = paper_Short / image_ratio
         newWidth = paper_Short
 
     elif image_ratio < paper_ratio:
-        newWidth = paper_Long * image_ratio
-        newHeight = paper_Long
+        newWidth = paper_long * image_ratio
+        newHeight = paper_long
     
     pdf.image(imageList[i], 0, 0, newWidth, newHeight)
     # return newWidth, newHeight
 
-def AspCalc_L(paper_Short, paper_Long, image):
+def AspCalc_L(paper_Short, paper_long, image):
     pdf.add_page('L')
-    paper_ratio = paper_Long / paper_Short
+    paper_ratio = paper_long / paper_Short
     image_ratio = image.width / image.height
 
     if image_ratio > paper_ratio:
-        newWidth = paper_Long
-        newHeight = paper_Long / image_ratio
+        newWidth = paper_long
+        newHeight = paper_long / image_ratio
     
     elif image_ratio <= paper_ratio:
         newWidth = paper_Short * image_ratio
@@ -58,7 +56,8 @@ def folderSrc(folder):
     print('\n'+ 'Your directory is: ' + folder +'\n')                                                                                     
     for item in os.listdir(folder):
         if item.lower().endswith(('.png', '.jpg', '.jpeg')):
-            fullPath = folder + '\\' + f'{item}'
+            # fullPath = folder + '\\' + f'{item}'
+            fullPath = os.path.join(folder, item)
             imageList.append(fullPath)
             imageList.sort()      # Sort the images by name.
     return imageList
@@ -94,6 +93,8 @@ while True:
         imageList = listMaker()
         saveDir = input('Insert the folder that you want to save the PDF file to: ') or openFolder()
         folder = rf'{saveDir}'
+    else:
+        pass
     # End of the declaration
 
     name = str(input('Insert your desired document name (if left blank, your document will be named after the current time): ')) or getDateTimeStr() # Name of the output PDF file.
@@ -106,13 +107,13 @@ while True:
     pdf = FPDF(format = f'{size}')
     if size.lower().endswith(('a3')):
         paper_Short = int(297)
-        paper_Long = int (420)
+        paper_long = int (420)
     elif size.lower().endswith(('a4')):
         paper_Short = int(210) 
-        paper_Long = int (297)
+        paper_long = int (297)
     elif size.lower().endswith(('a5')):
         paper_Short = int(148)
-        paper_Long = int (210)
+        paper_long = int (210)
 
     # -------------- CONVERT TO PDF ------------ #
     
@@ -126,19 +127,19 @@ while True:
         
         if aspect.lower() == 'y':
             if width >= height:
-                AspCalc_L(paper_Short, paper_Long, image)             
+                AspCalc_L(paper_Short, paper_long, image)             
 
             elif width < height:
-                AspCalc_P(paper_Short,paper_Long,image)
+                AspCalc_P(paper_Short,paper_long,image)
 
         elif aspect.lower() == 'n':
             if width >= height:
                 pdf.add_page('L')
-                pdf.image(imageList[i], 0, 0, paper_Long, paper_Short)
+                pdf.image(imageList[i], 0, 0, paper_long, paper_Short)
 
             elif width < height:
                 pdf.add_page('P')              
-                pdf.image(imageList[i], 0, 0, paper_Short, paper_Long)
+                pdf.image(imageList[i], 0, 0, paper_Short, paper_long)
 
         
     pdf.output(folder + '\\' + name + '.pdf' , 'F')                      # Save the PDF.

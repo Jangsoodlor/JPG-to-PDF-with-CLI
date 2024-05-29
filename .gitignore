@@ -133,3 +133,6 @@ AspCalcTestModule.py
 330.py
 test.py
 exiffix.py
+.vscode
+.idea
+test
