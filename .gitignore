@@ -129,10 +129,4 @@ dmypy.json
 .pyre/
 pdfhuakuynaheeyedmare.code-workspace
 
-AspCalcTestModule.py
-330.py
-test.py
-exiffix.py
-.vscode
-.idea
-test
+test_img

@@ -1,14 +1,17 @@
+"""Containts the Paper class"""
 from enum import Enum
 
+
 class Paper(Enum):
+    """Contains paper size and methods to resize pictures to fit the paper"""
     A3 = (297, 420)
     A4 = (210, 297)
     A5 = (148, 210)
-    Letter = (215.9, 279.4)
-    Legal = (215.9, 355.6)
+    LETTER = (215.9, 279.4)
+    LEGAL = (215.9, 355.6)
 
     @classmethod
-    def new_wh_portrait(self, paper, image):
+    def new_wh_portrait(cls, paper, image):
         paper_short = paper[0]
         paper_long = paper[1]
         paper_ratio = paper_short / paper_long
@@ -19,10 +22,12 @@ class Paper(Enum):
         else:
             new_width = paper_long * image_ratio
             new_height = paper_long
-        return new_width, new_height
+        margin_x = (paper_short - new_width)/2
+        margin_y = (paper_long - new_height)/2
+        return new_width, new_height, margin_x, margin_y
 
     @classmethod
-    def new_wh_landscape(self, paper, image):
+    def new_wh_landscape(cls, paper, image):
         paper_short = paper[0]
         paper_long = paper[1]
         paper_ratio = paper_long / paper_short
@@ -33,7 +38,6 @@ class Paper(Enum):
         else:
             new_width = paper_short * image_ratio
             new_height = paper_short
-        return new_width, new_height
-
-if __name__ =='__main__':
-    print(Paper.A4.value)
+        margin_x = (paper_long - new_width)/2
+        margin_y = (paper_short - new_height)/2
+        return new_width, new_height, margin_x, margin_y
